@@ -16,9 +16,10 @@ class BooksApp extends React.Component {
   goToSearchPage =  e => this.setState({showSearchPage: e})
 
   // Api To get all books from the api server
-  componentDidMount() {
-    BooksAPI.getAll().then(resp => this.setState({books: resp}))
-  }
+  async componentDidMount() {
+    const books = await BooksAPI.getAll()
+    this.setState({ books })
+    }
 
   //function to move book to another shelf
   moveShelf= (book, shelf) => {

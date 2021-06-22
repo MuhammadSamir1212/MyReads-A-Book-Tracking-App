@@ -49,14 +49,8 @@ class SearchPage extends Component {
         <div className="search-books-results">
           <ol className="books-grid">
             {searchBooks.length > 0 && searchBooks.map(book => {
+              book.shelf ="none";
               const selectedShelf = searchBooks.find(searchBook => searchBook.id === book.id)
-              // here i have a problem i dont know why that didnt work, the books is not selected could be none but is didnt work
-              if (selectedShelf) {
-                book.shelf = selectedShelf.shelf
-                
-              }else{
-                book.shelf ='none';
-              }
               return <Books key={book.id} {...book} moveShelf={this.props.moveShelf}/>
             })}
           </ol>
