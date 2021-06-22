@@ -8,6 +8,7 @@ class Books extends Component {
   render() {
     //clean up the props
     const {shelf, title, authors} = this.props
+    const bookImage = this.props.imageLinks ? this.props.imageLinks.thumbnail : ""
 
     return(
       <li>
@@ -16,7 +17,7 @@ class Books extends Component {
             <div className="book-cover" style={{ 
               width: 128, 
               height: 193, 
-              backgroundImage: `url(${this.props.imageLinks ? this.props.imageLinks.thumbnail : ""})` 
+              backgroundImage: `url(${bookImage})` 
             }} />
             <div className="book-shelf-changer">
               <select value={shelf} onChange={this.handleChange}>

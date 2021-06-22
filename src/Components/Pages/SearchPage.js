@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import {Link} from 'react-router-dom'
-import {search} from '../../BooksAPI'
 import * as BooksAPI from '../../BooksAPI'
 import Books from '../Shilfs/Books'
 
@@ -8,38 +7,33 @@ class SearchPage extends Component {
 
   //state for the search
   state = {
-    books: [],
+    searchBooks: [],
     query: "",
   }
   
-  componentDidMount() {
-    BooksAPI.getAll().then(resp => this.setState({books: resp}))
+  queryUpdate = (query) => {
+    this.setState({query:query})
+    this.updateSearch(query)
   }
 
-  
-
-  //handel onChange to get the books
-  handelSearch = async e => {
-    try{
-      const query = e.target.value
-      this.setState({query})
-
-      if (query.trim()) {
-        const results = await search(query)
-        if(results.error){
-          this.setState({books:[]})
-        }else{
-          this.setState({books: results})
-        }
-      }else {
-        this.setState({books:[]})
-      }
-    }catch(error){
-      console.log(error)
+  updateSearch = (query) => {
+    if (query) {
+      BooksAPI.search(query).then((searchBooks) => {
+        this.setState({searchBooks:searchBooks})
+      })
+    }else{
+      this.setState({searchBooks: []})
     }
   }
 
+  // handel onChange
+  handelSearch = (e) => {
+    this.queryUpdate(e.target.value)
+  }
+
   render() {
+    const {searchBooks} = this.state
+
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -54,14 +48,14 @@ class SearchPage extends Component {
         </div>
         <div className="search-books-results">
           <ol className="books-grid">
-            {this.state.books.length > 0 && this.state.books.map(book => {
-              const selectedShelf = this.state.books.find(searchBook => searchBook.id === book.id)
+            {searchBooks.length > 0 && searchBooks.map(book => {
+              const selectedShelf = searchBooks.find(searchBook => searchBook.id === book.id)
               // here i have a problem i dont know why that didnt work, the books is not selected could be none but is didnt work
               if (selectedShelf) {
                 book.shelf = selectedShelf.shelf
                 
               }else{
-                book.value.shelf ='none';
+                book.shelf ='none';
               }
               return <Books key={book.id} {...book} moveShelf={this.props.moveShelf}/>
             })}
