@@ -19,7 +19,7 @@ class BooksApp extends React.Component {
   async componentDidMount() {
     const books = await BooksAPI.getAll()
     this.setState({ books })
-    }
+  }
 
   //function to move book to another shelf
   moveShelf= (book, shelf) => {
@@ -44,7 +44,7 @@ class BooksApp extends React.Component {
           render={() => <SearchPage 
             showSearchPage={this.goToSearchPage} 
             moveShelf={this.moveShelf}/>}
-            addBooks={this.state.books}
+            books={this.state.books}
         />
 
       </div>

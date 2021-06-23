@@ -7,7 +7,7 @@ class Books extends Component {
 
   render() {
     //clean up the props
-    const {shelf, title, authors} = this.props
+    const { shelf, title, authors} = this.props
     const bookImage = this.props.imageLinks ? this.props.imageLinks.thumbnail : ""
 
     return(

@@ -26,14 +26,17 @@ class SearchPage extends Component {
     }
   }
 
+  async componentDidMount() {
+    const books = await BooksAPI.getAll()
+    this.setState({ books })
+  }
+
   // handel onChange
   handelSearch = (e) => {
     this.queryUpdate(e.target.value)
   }
 
   render() {
-    const {searchBooks} = this.state
-
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -48,11 +51,20 @@ class SearchPage extends Component {
         </div>
         <div className="search-books-results">
           <ol className="books-grid">
-            {searchBooks.length > 0 && searchBooks.map(book => {
-              book.shelf ="none";
-              const selectedShelf = searchBooks.find(searchBook => searchBook.id === book.id)
-              return <Books key={book.id} {...book} moveShelf={this.props.moveShelf}/>
+
+            {this.state.searchBooks.map(searchBooks => {
+              searchBooks.shelf = 'none'
+              this.state.books.map(book => (
+                book.id === searchBooks.id ? searchBooks.shelf = book.shelf : ''
+              ))
+              return (
+                <li key={searchBooks.id}>
+                  <Books book={searchBooks} {...searchBooks} moveShelf={this.props.moveShelf} />
+                </li>
+              )
             })}
+            {this.state.searchBooks.length === 0 && <h1 style={{textAlign:"center"}}>No Search Result</h1>}
+            
           </ol>
         </div>
       </div>
